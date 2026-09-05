@@ -17,7 +17,7 @@ const INVOLVEMENT_LINKS = [
 ];
 
 const linkClass =
-  "inline-flex min-h-[44px] items-center rounded-md text-[0.9375rem] text-white/80 transition-colors duration-150 ease-out hover:text-gold-soft";
+  "inline-flex min-h-[44px] items-center rounded-md text-body-sm text-white/80 transition-colors duration-150 ease-out hover:text-gold-soft";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -32,11 +32,11 @@ export default function Footer() {
             <div className="sm:col-span-2 lg:col-span-1">
               <Link
                 href="/"
-                className="inline-flex rounded-md text-white transition-colors duration-150 ease-out hover:text-gold-soft"
+                className="inline-flex min-h-[44px] items-center rounded-md text-white transition-colors duration-150 ease-out hover:text-gold-soft"
               >
                 <Logo />
               </Link>
-              <p className="mt-5 max-w-[42ch] text-[0.9375rem] text-[var(--muted-fg)]">
+              <p className="mt-5 max-w-[42ch] text-body-sm text-[var(--muted-fg)]">
                 {ORG.shortDescription}
               </p>
             </div>
@@ -44,7 +44,7 @@ export default function Footer() {
             <nav aria-labelledby="footer-explore">
               <h2
                 id="footer-explore"
-                className="font-heading text-xs font-semibold tracking-[0.1em] text-gold-soft uppercase"
+                className="font-heading text-label font-semibold tracking-[0.1em] text-gold-soft uppercase"
               >
                 Explore
               </h2>
@@ -62,7 +62,7 @@ export default function Footer() {
             <nav aria-labelledby="footer-programs">
               <h2
                 id="footer-programs"
-                className="font-heading text-xs font-semibold tracking-[0.1em] text-gold-soft uppercase"
+                className="font-heading text-label font-semibold tracking-[0.1em] text-gold-soft uppercase"
               >
                 Programs
               </h2>
@@ -80,7 +80,7 @@ export default function Footer() {
             <div>
               <h2
                 id="footer-involved"
-                className="font-heading text-xs font-semibold tracking-[0.1em] text-gold-soft uppercase"
+                className="font-heading text-label font-semibold tracking-[0.1em] text-gold-soft uppercase"
               >
                 Get Involved
               </h2>
@@ -94,7 +94,7 @@ export default function Footer() {
                 ))}
               </ul>
 
-              <h2 className="mt-6 font-heading text-xs font-semibold tracking-[0.1em] text-gold-soft uppercase">
+              <h2 className="mt-6 font-heading text-label font-semibold tracking-[0.1em] text-gold-soft uppercase">
                 Contact
               </h2>
               <ul className="mt-3 flex flex-col">
@@ -124,11 +124,11 @@ export default function Footer() {
 
           <div className="mt-12 border-t border-[var(--hairline)] pt-8">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-sm text-[var(--muted-fg)]">
+              <p className="text-meta text-[var(--muted-fg)]">
                 {year} {ORG.name}. All rights reserved.
               </p>
 
-              <p className="text-sm text-[var(--muted-fg)]">
+              <p className="text-meta text-[var(--muted-fg)]">
                 <a
                   href={CREDIT.href}
                   rel="noopener noreferrer"

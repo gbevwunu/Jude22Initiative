@@ -111,6 +111,12 @@
   --btn-outline-bg-hover: rgba(11, 31, 58, 0.06);
   --hairline: rgba(11, 31, 58, 0.12);
   --muted-fg: var(--color-grey-600);
+
+  /* gold-ink on white is 4.96:1 */
+  --badge-fg: var(--color-gold-ink);
+  --badge-bd: rgba(201, 162, 39, 0.45);
+  --badge-bg: rgba(201, 162, 39, 0.10);
+  --badge-review-bd: var(--color-gold-edge);
 }
 
 /* Dark surfaces re-point the focus ring: gold-soft on navy = 10.6:1 */
@@ -120,6 +126,12 @@
   --btn-outline-bd: rgba(255, 255, 255, 0.5);
   --btn-outline-bg-hover: rgba(255, 255, 255, 0.14);
   --hairline: rgba(255, 255, 255, 0.18);
+
+  /* gold-soft on navy is 10.62:1, where gold-ink would be only 3.33:1 */
+  --badge-fg: var(--color-gold-soft);
+  --badge-bd: rgba(231, 206, 122, 0.45);
+  --badge-bg: rgba(231, 206, 122, 0.12);
+  --badge-review-bd: var(--color-gold-soft);
   /* On navy this is 8.9:1, comfortably past 4.5:1 for body copy. */
   --muted-fg: #c3cddb;
 }
@@ -278,6 +290,9 @@
   }
 
   .bg-grad-growth {
+    /* Solid fallback under the gradient. Without it, a surface that fails to
+       paint its background-image leaves white text on white. */
+    background-color: var(--color-deep-blue);
     background-image: var(--grad-growth);
   }
 
@@ -604,5 +619,48 @@
 @layer utilities {
   .scroll-anchor {
     scroll-margin-top: 6rem;
+  }
+}
+
+/* ==========================================================================
+   MOBILE TYPE FLOOR
+
+   Nothing renders below 16px under 640px. Small text is the first thing to
+   fail on a phone held at arm's length, and 16px is also the threshold below
+   which iOS Safari zooms the viewport when a field is focused.
+
+   These three utilities replace the raw 12px / 14px / 15px sizes. Each
+   holds 1rem on mobile and steps down to its intended size from 640px up,
+   so the desktop hierarchy is unchanged.
+   ========================================================================== */
+
+@layer utilities {
+  .text-body-sm {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .text-meta {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .text-label {
+    font-size: 1rem;
+    line-height: 1.35;
+  }
+
+  @media (min-width: 640px) {
+    .text-body-sm {
+      font-size: 0.9375rem;
+    }
+
+    .text-meta {
+      font-size: 0.875rem;
+    }
+
+    .text-label {
+      font-size: 0.75rem;
+    }
   }
 }

@@ -146,7 +146,7 @@ export default function Navigation() {
                       <Link
                         href={item.href}
                         aria-current={active ? "page" : undefined}
-                        className={`relative flex min-h-[44px] items-center rounded-md px-3.5 font-heading text-[0.9375rem] font-medium transition-colors duration-150 ease-out hover:text-gold-soft ${
+                        className={`relative flex min-h-[44px] items-center rounded-md px-3.5 font-heading text-body-sm font-medium transition-colors duration-150 ease-out hover:text-gold-soft ${
                           active ? "text-gold-soft" : "text-white/85"
                         }`}
                       >

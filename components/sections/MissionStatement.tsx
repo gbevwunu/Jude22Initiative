@@ -9,7 +9,7 @@ export default function MissionStatement() {
           <div className="mx-auto max-w-[54rem] text-center">
             <h2
               id="mission-heading"
-              className="font-heading text-xs font-semibold tracking-[0.14em] text-gold-ink uppercase"
+              className="font-heading text-label font-semibold tracking-[0.14em] text-gold-ink uppercase"
             >
               Our mission
             </h2>

@@ -45,7 +45,7 @@ export default function GetInvolvedPage() {
                     {pathway.title}
                   </h3>
 
-                  <p className="mt-2.5 text-[0.9375rem] text-[var(--muted-fg)]">{pathway.pitch}</p>
+                  <p className="mt-2.5 text-body-sm text-[var(--muted-fg)]">{pathway.pitch}</p>
 
                   {pathway.needsReview ? (
                     <p className="mt-4">
@@ -128,7 +128,7 @@ export default function GetInvolvedPage() {
                 the details replace this panel.
               </p>
 
-              <p className="mt-4 max-w-[62ch] text-sm text-[var(--muted-fg)]">
+              <p className="mt-4 max-w-[62ch] text-meta text-[var(--muted-fg)]">
                 No payment provider is wired into this site. Nothing here
                 collects card or bank details, and nothing should be added
                 without reviewing the security policy in middleware.ts first.
