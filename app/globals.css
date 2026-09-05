@@ -594,3 +594,15 @@
     }
   }
 }
+
+/* ==========================================================================
+   ANCHOR OFFSET
+   The header is sticky at 72px, so any element an in-page link targets needs
+   to clear it or the heading lands underneath. One value for the whole site.
+   ========================================================================== */
+
+@layer utilities {
+  .scroll-anchor {
+    scroll-margin-top: 6rem;
+  }
+}

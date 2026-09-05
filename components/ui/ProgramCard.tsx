@@ -12,7 +12,7 @@ export default function ProgramCard({ program, as: Heading = "h3" }: ProgramCard
   return (
     <article
       id={program.id}
-      className="flex h-full flex-col rounded-2xl border border-[var(--hairline)] bg-white p-7 lg:p-9"
+      className="scroll-anchor flex h-full flex-col rounded-2xl border border-[var(--hairline)] bg-white p-7 lg:p-9"
     >
       <Badge variant="gold">{program.eyebrow}</Badge>
 
