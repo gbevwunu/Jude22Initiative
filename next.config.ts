@@ -27,6 +27,23 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   compress: true,
 
+  /**
+   * Render metadata into <head> before the shell is sent, for every client.
+   *
+   * These pages render dynamically so the CSP nonce can be stamped onto the
+   * script tags. Next's default behaviour on a dynamic route is to stream
+   * metadata, which puts <title> and <meta name="description"> at the end of
+   * the body instead. React never hoists them into <head>, so they stay in
+   * the body even after hydration: non-conformant, invisible to any parser
+   * that reads only the head, and flagged by Lighthouse.
+   *
+   * Next already blocks for known social scrapers, so link previews were
+   * unaffected, but everything else saw a document whose head carried no
+   * title or description. Widening this to every agent costs nothing here
+   * because the metadata is entirely static, with no async work to wait on.
+   */
+  htmlLimitedBots: /.*/,
+
   eslint: {
     ignoreDuringBuilds: false,
   },

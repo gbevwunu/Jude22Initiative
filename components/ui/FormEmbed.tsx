@@ -39,20 +39,20 @@ export default function FormEmbed({
           {title}
         </h3>
 
-        <p className="mt-3 max-w-[60ch] text-[0.9375rem] text-[var(--muted-fg)]">
+        <p className="mt-3 max-w-[60ch] text-body-sm text-[var(--muted-fg)]">
           This is where the {slotName} form will appear. Build the form in
           Tally or JotForm, publish it, then paste the embed URL into
-          <code className="mx-1 rounded bg-navy/8 px-1.5 py-0.5 font-mono text-[0.85em] text-navy">
+          <code className="mx-1 inline-block max-w-full rounded bg-navy/8 px-1.5 py-0.5 font-mono text-[1em] break-all text-navy sm:text-[0.85em]">
             FORM_EMBED.{slotName}
           </code>
           in
-          <code className="mx-1 rounded bg-navy/8 px-1.5 py-0.5 font-mono text-[0.85em] text-navy">
+          <code className="mx-1 inline-block max-w-full rounded bg-navy/8 px-1.5 py-0.5 font-mono text-[1em] break-all text-navy sm:text-[0.85em]">
             lib/constants.ts
           </code>
           . Set the form to redirect to /thank-you after submission.
         </p>
 
-        <p className="mt-4 max-w-[60ch] text-sm text-[var(--muted-fg)]">
+        <p className="mt-4 max-w-[60ch] text-meta text-[var(--muted-fg)]">
           Only Tally and JotForm are permitted to load in a frame on this site.
           Using another provider means updating the security policy in
           middleware.ts as well, or the browser will block it. Full steps are

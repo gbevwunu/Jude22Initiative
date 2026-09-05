@@ -86,7 +86,7 @@ export default function Hero() {
             </div>
 
             <p
-              className={`mt-10 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-[var(--muted-fg)] ${step("hero-meta")}`}
+              className={`mt-10 flex flex-wrap items-center gap-x-3 gap-y-1 text-meta text-[var(--muted-fg)] ${step("hero-meta")}`}
             >
               <span>Responsibility</span>
               <span aria-hidden="true" className="text-gold">

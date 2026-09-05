@@ -17,7 +17,7 @@ export default function PillarCard({ pillar }: PillarCardProps) {
         <PillarIcon name={pillar.id} />
       </span>
       <h3 className="mt-5 font-heading text-xl font-semibold text-navy">{pillar.title}</h3>
-      <p className="mt-2.5 text-[0.9375rem] text-[var(--muted-fg)]">{pillar.blurb}</p>
+      <p className="mt-2.5 text-body-sm text-[var(--muted-fg)]">{pillar.blurb}</p>
     </article>
   );
 }
