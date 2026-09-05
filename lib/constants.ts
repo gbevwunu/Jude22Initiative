@@ -210,7 +210,7 @@ export const GET_INVOLVED: ReadonlyArray<Pathway> = [
     id: "partner",
     title: "Partner",
     pitch:
-      "Schools, universities, and organisations partner with us to bring discovery events to their students and open mentorship pathways for them.",
+      "Schools, universities, and organizations partner with us to bring discovery events to their students and open mentorship pathways for them.",
     ctaLabel: "Start a conversation",
     ctaHref: "/contact",
   },
