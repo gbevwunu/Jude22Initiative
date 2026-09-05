@@ -227,9 +227,18 @@
     transform: scale(0.95);
   }
 
-  .reveal-clip {
+  /* Clipped on an inner element, never on the observed one. See the note in
+     ScrollReveal.tsx: a clipped element reports a zero intersection ratio and
+     would never cross its threshold. */
+  .reveal-clip-inner {
+    display: block;
     clip-path: inset(0 0 100% 0);
-    transform: translate3d(0, calc(var(--reveal-offset) * 0.5), 0);
+    /* On-screen movement rather than a pure entrance, so ease-in-out. */
+    transition: clip-path var(--reveal-duration) var(--ease-in-out) var(--reveal-delay);
+  }
+
+  .reveal.is-visible .reveal-clip-inner {
+    clip-path: inset(0 0 0 0);
   }
 
   .reveal.is-visible {
@@ -253,10 +262,13 @@
     }
 
     .reveal-fade-up,
-    .reveal-scale-in,
-    .reveal-clip {
+    .reveal-scale-in {
       transform: none;
+    }
+
+    .reveal-clip-inner {
       clip-path: none;
+      transition: none;
     }
   }
 
@@ -397,5 +409,188 @@
      ring when it receives that focus. */
   main:focus {
     outline: none;
+  }
+}
+
+/* ==========================================================================
+   HERO CHOREOGRAPHY
+
+   Gate: first-time / rare tier. A visitor sees this once per session, which
+   is where the delight budget lives, so the sequence is allowed to run past
+   the 300ms UI cap. Marketing entrances sit in the 500-1100ms band.
+
+   Tool: CSS animations rather than transitions. This is predetermined,
+   one-shot motion that plays while the page is still loading its chunks, and
+   CSS animations run off the main thread so they stay smooth under that load.
+   Nothing here is rapidly re-triggerable, which is the case that would
+   otherwise demand transitions.
+
+   Orchestration beats: headline 100ms, accent 240ms, subhead 320ms,
+   then the two calls to action 440ms and 500ms.
+   ========================================================================== */
+
+@layer utilities {
+  @keyframes hero-clip-up {
+    from {
+      opacity: 0;
+      clip-path: inset(0 0 100% 0);
+      transform: translate3d(0, 14px, 0);
+    }
+    to {
+      opacity: 1;
+      clip-path: inset(0 0 0 0);
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes hero-fade-up {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 16px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes hero-scale-in {
+    from {
+      opacity: 0;
+      /* Never scale(0). Nothing in the real world appears from nothing. */
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* `both` holds the start frame through the delay, so nothing flashes in
+     at full opacity before its beat arrives. */
+  .hero-step {
+    animation-duration: 800ms;
+    animation-timing-function: var(--ease-out);
+    animation-fill-mode: both;
+    will-change: transform, opacity;
+  }
+
+  .hero-headline {
+    animation-name: hero-clip-up;
+    animation-duration: 900ms;
+    animation-delay: 100ms;
+    animation-timing-function: var(--ease-in-out);
+  }
+
+  .hero-accent {
+    animation-name: hero-scale-in;
+    animation-duration: 900ms;
+    animation-delay: 240ms;
+  }
+
+  .hero-subhead {
+    animation-name: hero-fade-up;
+    animation-duration: 700ms;
+    animation-delay: 320ms;
+  }
+
+  .hero-cta-1 {
+    animation-name: hero-fade-up;
+    animation-duration: 700ms;
+    animation-delay: 440ms;
+  }
+
+  /* 60ms behind its neighbour, inside the 30-80ms stagger band. */
+  .hero-cta-2 {
+    animation-name: hero-fade-up;
+    animation-duration: 700ms;
+    animation-delay: 500ms;
+  }
+
+  .hero-meta {
+    animation-name: hero-fade-up;
+    animation-duration: 700ms;
+    animation-delay: 560ms;
+  }
+
+  /* Replay guard. Set before paint by the inline script in the document when
+     the sequence has already run in this session, and after the run by the
+     Hero component for later client side mounts. Higher specificity than the
+     per-beat rules above, including the reduced-motion ones, so it wins. */
+  [data-hero="played"] .hero-step {
+    animation: none;
+    opacity: 1;
+    clip-path: none;
+    transform: none;
+    will-change: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    /* Gentler, not gone: the beats still arrive in order so the sequence
+       reads, but nothing travels, scales or clips. */
+    .hero-step {
+      animation-name: hero-reduced-fade;
+      animation-duration: 400ms;
+      will-change: auto;
+    }
+
+    .hero-headline,
+    .hero-accent,
+    .hero-subhead,
+    .hero-cta-1,
+    .hero-cta-2,
+    .hero-meta {
+      animation-name: hero-reduced-fade;
+      animation-duration: 400ms;
+    }
+
+    @keyframes hero-reduced-fade {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+/* ==========================================================================
+   LINE DRAWING (mentorship connector)
+
+   The effect wanted here is a line drawing: the path appears to be traced
+   from one node to the other. The obvious implementation animates
+   stroke-dashoffset, which is not a sanctioned property because it repaints
+   every frame. clip-path is the sanctioned reveal property and produces the
+   same read, so the connector is wiped along its own axis instead.
+
+   Driven by the .is-visible class that ScrollReveal already sets on its
+   wrapper, so no second observer is needed.
+   ========================================================================== */
+
+@layer utilities {
+  .line-draw-x {
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 900ms var(--ease-in-out);
+  }
+
+  .line-draw-y {
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 900ms var(--ease-in-out);
+  }
+
+  .reveal.is-visible .line-draw-x,
+  .reveal.is-visible .line-draw-y {
+    clip-path: inset(0 0 0 0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    /* The line is content, not decoration, so it stays. It simply arrives
+       with the surrounding fade rather than being traced. */
+    .line-draw-x,
+    .line-draw-y {
+      clip-path: none;
+      transition: none;
+    }
   }
 }

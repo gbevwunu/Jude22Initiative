@@ -1,26 +1,42 @@
-import Container from "@/components/ui/Container";
-import SectionHeader from "@/components/ui/SectionHeader";
-import Button from "@/components/ui/Button";
+import type { Metadata } from "next";
+import { ORG, SITE_URL } from "@/lib/constants";
+import Hero from "@/components/sections/Hero";
+import MissionStatement from "@/components/sections/MissionStatement";
+import FivePillars from "@/components/sections/FivePillars";
+import WhatWeDo from "@/components/sections/WhatWeDo";
+import MentorshipBridge from "@/components/sections/MentorshipBridge";
+import ImpactMetrics from "@/components/sections/ImpactMetrics";
+import GetInvolvedCTA from "@/components/sections/GetInvolvedCTA";
 
-/* Phase 1 placeholder. Replaced by the composed home page in Phase 2. */
+export const metadata: Metadata = {
+  title: `${ORG.name} | Mentorship, Character, and Purpose for Young Adults`,
+  description:
+    "The Jude 22 Initiative changes the narrative young adults hear. We run discovery events in schools and universities and connect students with proven mentors.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: `${ORG.name} | Mentorship, Character, and Purpose for Young Adults`,
+    description:
+      "Discovery events in schools and universities, and mentorship that connects students with people who have a track record in their field.",
+    url: new URL("/", SITE_URL).toString(),
+    type: "website",
+  },
+  twitter: {
+    title: `${ORG.name} | Mentorship, Character, and Purpose for Young Adults`,
+    description:
+      "Discovery events in schools and universities, and mentorship that connects students with people who have a track record in their field.",
+  },
+};
+
 export default function HomePage() {
   return (
-    <section className="section-y">
-      <Container>
-        <SectionHeader
-          eyebrow="Phase 1"
-          title="Foundation in place"
-          lede="Design tokens, layout primitives, navigation and footer are wired up. The composed home page lands in Phase 2."
-        />
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Button href="/get-involved" variant="primary" size="lg">
-            Become a Mentor
-          </Button>
-          <Button href="/programs" variant="outline" size="lg">
-            Get Involved
-          </Button>
-        </div>
-      </Container>
-    </section>
+    <>
+      <Hero />
+      <MissionStatement />
+      <FivePillars />
+      <WhatWeDo />
+      <MentorshipBridge />
+      <ImpactMetrics />
+      <GetInvolvedCTA />
+    </>
   );
 }
