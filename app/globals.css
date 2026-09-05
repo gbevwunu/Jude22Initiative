@@ -1,0 +1,401 @@
+@import "tailwindcss";
+
+/* Touch devices fire :hover on tap, which leaves an element stuck in its
+   hover state after the finger lifts. Tailwind v4 gates `hover:` behind
+   (hover: hover) only, so the built-in variant is redefined here to add
+   (pointer: fine). Every hover utility on the site inherits the stricter
+   query, rather than each call site remembering to hand-write it. */
+@custom-variant hover {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @slot;
+    }
+  }
+}
+
+/* ==========================================================================
+   THE JUDE 22 INITIATIVE - DESIGN TOKENS
+   Brand palette is fixed. Tokens suffixed -ink / -edge are accessible
+   companions derived for text and border roles where a brand colour does
+   not reach WCAG 2.2 AA against a given surface. See SETUP.md.
+   ========================================================================== */
+
+@theme {
+  /* --- Brand palette -------------------------------------------------- */
+  --color-navy: #0b1f3a;
+  --color-deep-blue: #143b6b;
+  --color-blue-accent: #2e6fb8;
+  --color-gold: #c9a227;
+  --color-gold-soft: #e7ce7a;
+  --color-grey-900: #1a1d21;
+  --color-grey-500: #6b7280;
+  --color-grey-100: #f3f4f6;
+  --color-white: #ffffff;
+
+  /* --- Accessible companions ------------------------------------------
+     gold-ink : gold-family text/icons on white or grey-100  (4.96 / 4.51)
+     gold-edge: gold component borders on white, meets 3:1    (3.03)
+     grey-600 : muted body text on white or grey-100          (4.98 / 4.52)
+     grey-500 alone fails 4.5:1 on grey-100 (4.39) so it is decorative only.
+     -------------------------------------------------------------------- */
+  --color-gold-ink: #876d1a;
+  --color-gold-edge: #b39023;
+  --color-grey-600: #69707e;
+
+  /* --- Typography ------------------------------------------------------ */
+  --font-heading: var(--font-sora), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+
+  --text-hero: clamp(2.5rem, 6vw, 5rem);
+  --text-hero--line-height: 1.06;
+  --text-hero--letter-spacing: -0.02em;
+
+  --text-section: clamp(1.75rem, 4vw, 3rem);
+  --text-section--line-height: 1.14;
+  --text-section--letter-spacing: -0.015em;
+
+  --text-lede: clamp(1.125rem, 2vw, 1.375rem);
+  --text-lede--line-height: 1.6;
+
+  /* --- Motion ----------------------------------------------------------
+     Curves are fixed by the motion system. Do not invent new ones.
+     -------------------------------------------------------------------- */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  /* Tailwind ships cubic-bezier(0.4, 0, 0.2, 1) as the fallback for any bare
+     `transition` utility. That curve is too weak for UI, so the default is
+     repointed at the strong ease-out and no utility can fall back to it. */
+  --default-transition-timing-function: var(--ease-out);
+  --default-transition-duration: 160ms;
+}
+
+/* Spec-named aliases, so raw CSS can use the brand names directly. */
+:root {
+  --navy: var(--color-navy);
+  --deep-blue: var(--color-deep-blue);
+  --blue-accent: var(--color-blue-accent);
+  --gold: var(--color-gold);
+  --gold-soft: var(--color-gold-soft);
+  --grey-900: var(--color-grey-900);
+  --grey-500: var(--color-grey-500);
+  --grey-100: var(--color-grey-100);
+  --white: var(--color-white);
+  --grad-growth: linear-gradient(135deg, #143b6b 0%, #2e6fb8 100%);
+
+  /* 8px base spacing scale */
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-6: 3rem;
+  --space-8: 4rem;
+  --section-y: clamp(4rem, 10vw, 8rem);
+
+  /* Focus ring adapts to surface so it always clears 3:1 (WCAG 2.2 AA).
+     Navy on light = 16.5:1. Overridden to gold-soft on dark surfaces. */
+  --focus-ring: var(--color-navy);
+
+  color-scheme: light;
+}
+
+/* Outline buttons and rules adapt to the surface they sit on, so a single
+   `outline` variant reads correctly on navy and on white without the caller
+   choosing a colour. */
+:root {
+  --btn-outline-fg: var(--color-navy);
+  --btn-outline-bd: rgba(11, 31, 58, 0.4);
+  --btn-outline-bg-hover: rgba(11, 31, 58, 0.06);
+  --hairline: rgba(11, 31, 58, 0.12);
+  --muted-fg: var(--color-grey-600);
+}
+
+/* Dark surfaces re-point the focus ring: gold-soft on navy = 10.6:1 */
+.surface-dark {
+  --focus-ring: var(--color-gold-soft);
+  --btn-outline-fg: var(--color-white);
+  --btn-outline-bd: rgba(255, 255, 255, 0.5);
+  --btn-outline-bg-hover: rgba(255, 255, 255, 0.14);
+  --hairline: rgba(255, 255, 255, 0.18);
+  /* On navy this is 8.9:1, comfortably past 4.5:1 for body copy. */
+  --muted-fg: #c3cddb;
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
+@layer base {
+  * {
+    min-width: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background-color: var(--color-white);
+    color: var(--color-grey-900);
+    font-family: var(--font-body);
+    /* 16px floor on mobile, per accessibility spec */
+    font-size: 1rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Guards against any single element forcing a horizontal scrollbar */
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Never remove focus visibility. Single ring definition for the site. */
+  :focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Suppress the ring for pointer users who did not tab to the element,
+     while keeping it for keyboard and assistive tech. */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  ::selection {
+    background-color: var(--color-gold-soft);
+    color: var(--color-navy);
+  }
+
+  svg {
+    display: block;
+  }
+}
+
+/* ==========================================================================
+   MOTION PRIMITIVES
+
+   Reduced motion here means *gentler*, not zero: opacity and colour are
+   retained, movement and scale are dropped. Every animated class below
+   ships its own reduced-motion answer in this file, not as a follow-up.
+   ========================================================================== */
+
+@layer utilities {
+  /* --- Scroll reveal (driven by ScrollReveal.tsx / IntersectionObserver) --
+     The component sets --reveal-duration / --reveal-delay inline. */
+  .reveal {
+    --reveal-duration: 700ms;
+    --reveal-delay: 0ms;
+    --reveal-offset: 24px;
+    opacity: 0;
+    will-change: transform, opacity;
+    transition-property: opacity, transform, clip-path;
+    transition-duration: var(--reveal-duration);
+    transition-delay: var(--reveal-delay);
+    transition-timing-function: var(--ease-out);
+  }
+
+  .reveal-fade-up {
+    transform: translate3d(0, var(--reveal-offset), 0);
+  }
+
+  .reveal-scale-in {
+    /* Never scale(0). Enter from 0.95. */
+    transform: scale(0.95);
+  }
+
+  .reveal-clip {
+    clip-path: inset(0 0 100% 0);
+    transform: translate3d(0, calc(var(--reveal-offset) * 0.5), 0);
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 0 0 0);
+  }
+
+  /* Once the entrance has played, drop the compositor hint. */
+  .reveal.is-settled {
+    will-change: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      /* Keep the fade, drop all movement. */
+      transform: none;
+      clip-path: none;
+      transition-property: opacity;
+      transition-duration: 300ms;
+    }
+
+    .reveal-fade-up,
+    .reveal-scale-in,
+    .reveal-clip {
+      transform: none;
+      clip-path: none;
+    }
+  }
+
+  /* --- Section rhythm --- */
+  .section-y {
+    padding-block: var(--section-y);
+  }
+
+  .bg-grad-growth {
+    background-image: var(--grad-growth);
+  }
+
+  /* Leadership motif: the thin anchoring rule that sits under headings. */
+  .rule-anchor::after {
+    content: "";
+    display: block;
+    width: 3.5rem;
+    height: 3px;
+    margin-top: 1.25rem;
+    border-radius: 2px;
+    background-color: var(--color-gold);
+  }
+
+  .rule-anchor-center::after {
+    margin-inline: auto;
+  }
+}
+
+/* ==========================================================================
+   NAVIGATION MOTION
+
+   Gate: the mobile panel is opened occasionally, which is the tier that earns
+   a standard animation. Purpose is spatial consistency, so it exits along the
+   edge it entered by. Transitions rather than keyframes, because the trigger
+   can be tapped twice inside a second and a transition retargets from
+   wherever it currently sits instead of restarting from zero.
+   ========================================================================== */
+
+@layer utilities {
+  /* Header entrance on first paint. Opacity only, so it does not compete
+     with the hero headline that follows it in the sequence. Elevation shares
+     the declaration so neither transition overwrites the other. */
+  .header-enter {
+    opacity: 1;
+    transition-property: opacity, box-shadow;
+    transition-duration: 500ms, 200ms;
+    transition-timing-function: var(--ease-out);
+  }
+
+  @starting-style {
+    .header-enter {
+      opacity: 0;
+    }
+  }
+
+  .nav-overlay[data-state="closed"] {
+    pointer-events: none;
+  }
+
+  .nav-backdrop {
+    transition: opacity 220ms var(--ease-out);
+  }
+
+  .nav-panel {
+    /* Percentage translate, so the panel clears itself at any width. */
+    transform: translate3d(100%, 0, 0);
+    /* Exit: 220ms. The system responding should be quicker than the user's
+       deliberate open. */
+    transition: transform 220ms var(--ease-drawer);
+    will-change: transform;
+  }
+
+  .nav-panel.is-open {
+    transform: translate3d(0, 0, 0);
+    /* Enter: 280ms, inside the 200-500ms drawer budget. */
+    transition-duration: 280ms;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    /* Gentler, not gone: the panel still fades so its arrival is legible,
+       but it no longer travels across the screen. */
+    .header-enter {
+      transition-duration: 200ms, 200ms;
+    }
+
+    .nav-panel {
+      transform: none;
+      opacity: 0;
+      transition: opacity 200ms var(--ease-out);
+      will-change: auto;
+    }
+
+    .nav-panel.is-open {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* ==========================================================================
+   SKIP LINK
+   First focusable element on the page. Offscreen until focused, never
+   display:none, so keyboard and screen reader users can always reach it.
+   ========================================================================== */
+
+@layer utilities {
+  .skip-link {
+    position: fixed;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 100;
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    border-radius: 9999px;
+    background-color: var(--color-gold);
+    padding-inline: 1.25rem;
+    color: var(--color-navy);
+    font-family: var(--font-heading);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    /* Held just off the top edge rather than hidden, so it animates back in. */
+    transform: translateY(calc(-100% - 1rem));
+    transition: transform 180ms var(--ease-out);
+  }
+
+  .skip-link:focus-visible {
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .skip-link {
+      transition-duration: 0ms;
+    }
+  }
+
+  /* main is programmatically focused by the skip link, and should not show a
+     ring when it receives that focus. */
+  main:focus {
+    outline: none;
+  }
+}
