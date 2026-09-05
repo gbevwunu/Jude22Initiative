@@ -93,11 +93,11 @@ export default function ProgramsPage() {
             {EVENT_FLOW.map((item, index) => (
               <ScrollReveal key={item.step} delay={index * 60}>
                 <article className="h-full rounded-2xl border border-[var(--hairline)] bg-white p-7">
-                  <span aria-hidden="true" className="font-heading text-sm font-bold text-gold-ink">
+                  <span aria-hidden="true" className="font-heading text-meta font-bold text-gold-ink">
                     {item.step}
                   </span>
                   <h3 className="mt-3 font-heading text-lg font-semibold text-navy">{item.title}</h3>
-                  <p className="mt-2.5 text-[0.9375rem] text-[var(--muted-fg)]">{item.body}</p>
+                  <p className="mt-2.5 text-body-sm text-[var(--muted-fg)]">{item.body}</p>
                 </article>
               </ScrollReveal>
             ))}
@@ -110,7 +110,7 @@ export default function ProgramsPage() {
               </h3>
               <ul className="mt-5 grid gap-3 md:grid-cols-2">
                 {EVENT_OUTCOMES.map((outcome) => (
-                  <li key={outcome} className="flex gap-3 text-[0.9375rem] text-grey-900">
+                  <li key={outcome} className="flex gap-3 text-body-sm text-grey-900">
                     <svg
                       viewBox="0 0 20 20"
                       width="20"
@@ -166,7 +166,7 @@ export default function ProgramsPage() {
                 <article className="h-full rounded-2xl border border-[var(--hairline)] bg-white/[0.04] p-7">
                   <span aria-hidden="true" className="block h-[3px] w-10 rounded-full bg-gold" />
                   <h3 className="mt-5 font-heading text-lg font-semibold">{item.title}</h3>
-                  <p className="mt-2.5 text-[0.9375rem] text-[var(--muted-fg)]">{item.body}</p>
+                  <p className="mt-2.5 text-body-sm text-[var(--muted-fg)]">{item.body}</p>
                 </article>
               </ScrollReveal>
             ))}
@@ -178,7 +178,7 @@ export default function ProgramsPage() {
                 <h3 className="font-heading text-xl font-semibold">
                   Ready to be that person for someone
                 </h3>
-                <p className="mt-2 max-w-[52ch] text-[0.9375rem] text-[var(--muted-fg)]">
+                <p className="mt-2 max-w-[52ch] text-body-sm text-[var(--muted-fg)]">
                   Applications take a few minutes. We follow up with the checks
                   and a short conversation before any match is made.
                 </p>

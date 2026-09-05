@@ -80,7 +80,7 @@ export default function AboutPage() {
             <div className="mx-auto max-w-[52rem] text-center">
               <h2
                 id="vision-heading"
-                className="font-heading text-xs font-semibold tracking-[0.14em] text-gold-soft uppercase"
+                className="font-heading text-label font-semibold tracking-[0.14em] text-gold-soft uppercase"
               >
                 Our vision
               </h2>
@@ -123,7 +123,7 @@ export default function AboutPage() {
                       </h3>
                       <span
                         aria-hidden="true"
-                        className="font-heading text-sm font-semibold text-gold-ink"
+                        className="font-heading text-meta font-semibold text-gold-ink"
                       >
                         {String(index + 1).padStart(2, "0")}
                       </span>
@@ -158,7 +158,7 @@ export default function AboutPage() {
                   <h3 className="mt-5 font-heading text-lg font-semibold text-navy">
                     {audience.title}
                   </h3>
-                  <p className="mt-2.5 text-[0.9375rem] text-[var(--muted-fg)]">{audience.blurb}</p>
+                  <p className="mt-2.5 text-body-sm text-[var(--muted-fg)]">{audience.blurb}</p>
                 </article>
               </ScrollReveal>
             ))}

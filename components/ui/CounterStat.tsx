@@ -109,11 +109,11 @@ export default function CounterStat({
         {settled}
         {suffix} {label}
       </span>
-      <div aria-hidden="true" className="mt-3 text-[0.9375rem] text-[var(--muted-fg)]">
+      <div aria-hidden="true" className="mt-3 text-body-sm text-[var(--muted-fg)]">
         {label}
       </div>
       {needsReview ? (
-        <div aria-hidden="true" className="mt-2 text-xs font-semibold text-gold-ink">
+        <div aria-hidden="true" className="mt-2 text-label font-semibold text-gold-ink">
           {"{REVIEW}"}
         </div>
       ) : null}

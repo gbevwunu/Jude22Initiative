@@ -24,7 +24,7 @@ export default function ProgramCard({ program, as: Heading = "h3" }: ProgramCard
 
       <ul className="mt-6 flex flex-col gap-3">
         {program.points.map((point) => (
-          <li key={point} className="flex gap-3 text-[0.9375rem] text-grey-900">
+          <li key={point} className="flex gap-3 text-body-sm text-grey-900">
             <svg
               viewBox="0 0 20 20"
               width="20"
