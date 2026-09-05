@@ -215,6 +215,14 @@ If it is not set, the site falls back to `https://www.jude22initiative.org`. It
 still runs, but search engines and social previews will be pointed at the wrong
 place, so **set it before launch**.
 
+The value is forgiving. An empty value, a stray space, a missing `https://`, or
+a trailing slash are all handled, and anything unparseable falls back rather
+than failing the build. Adding the variable in Vercel and leaving the value
+blank is safe.
+
+Note for Vercel: a variable added with an empty value is not the same as no
+variable at all. Either give it the real address or remove the row entirely.
+
 Locally, copy `.env.example` to `.env.local` and edit it. `.env.local` is
 ignored by git and must never be committed.
 
