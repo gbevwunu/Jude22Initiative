@@ -211,17 +211,25 @@ One variable, and the site builds without it.
 
 No trailing slash.
 
-If it is not set, the site falls back to `https://www.jude22initiative.org`. It
-still runs, but search engines and social previews will be pointed at the wrong
-place, so **set it before launch**.
+**Before there is a domain, you do not need to set this at all.** On Vercel the
+site falls back to the project's own production address, the
+`something.vercel.app` one, which Vercel provides automatically. Canonical
+links and social previews then point at a real, reachable page.
+
+The order it works through is:
+
+1. `NEXT_PUBLIC_SITE_URL`, if set. Use this once the domain is live.
+2. Vercel's own production address, automatically, with nothing to configure.
+3. `https://www.jude22initiative.org` as a last resort.
 
 The value is forgiving. An empty value, a stray space, a missing `https://`, or
 a trailing slash are all handled, and anything unparseable falls back rather
-than failing the build. Adding the variable in Vercel and leaving the value
-blank is safe.
+than failing the build.
 
-Note for Vercel: a variable added with an empty value is not the same as no
-variable at all. Either give it the real address or remove the row entirely.
+**Set it at the point the domain goes live**, and not before. Pointing
+canonical links at a domain that does not resolve yet is worse than leaving
+them on the Vercel address, because the social share image is an absolute URL:
+if the domain is dead, link previews load no image.
 
 Locally, copy `.env.example` to `.env.local` and edit it. `.env.local` is
 ignored by git and must never be committed.

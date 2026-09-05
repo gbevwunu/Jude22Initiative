@@ -308,7 +308,25 @@ const FALLBACK_SITE_URL = "https://www.jude22initiative.org";
  * recoverable SEO problem and a failed deploy is an outage.
  */
 function resolveSiteUrl(): string {
-  const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  /**
+   * Order of preference:
+   *
+   * 1. NEXT_PUBLIC_SITE_URL, the real domain once there is one.
+   * 2. VERCEL_PROJECT_PRODUCTION_URL, which Vercel sets automatically to the
+   *    project's stable production address. Before a domain is bought this is
+   *    a live, reachable URL, which matters because canonical links and the
+   *    Open Graph image are absolute: pointing them at a domain nobody owns
+   *    yet means link previews load no image at all. Deliberately not
+   *    VERCEL_URL, which changes on every deployment and would make canonical
+   *    URLs unstable.
+   * 3. The placeholder domain, as a last resort.
+   *
+   * SITE_URL is only ever read on the server, so an unprefixed Vercel
+   * variable is safe here and nothing is exposed to the browser.
+   */
+  const raw =
+    process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
+    process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
 
   if (!raw) return FALLBACK_SITE_URL;
 
