@@ -288,6 +288,62 @@ export const CREDIT = {
   href: "https://gbgrouphq.com",
 } as const;
 
+/** Used whenever the environment does not supply a usable origin. */
+const FALLBACK_SITE_URL = "https://www.jude22initiative.org";
+
+/**
+ * Resolves the public origin used for metadataBase, canonicals, the sitemap
+ * and robots.txt.
+ *
+ * This is deliberately defensive rather than a `??` fallback. `??` only
+ * catches null and undefined, so a variable that exists but is set to an
+ * empty string passes straight through, and `new URL("")` then throws
+ * ERR_INVALID_URL while the build is collecting page data. That failure
+ * cannot happen locally, where the variable is simply unset, so it only
+ * appears in a deployment: exactly the place it is most expensive to find.
+ *
+ * Handled here: unset, empty, whitespace, a bare domain with no protocol,
+ * and a trailing slash. Anything genuinely unparseable falls back rather
+ * than taking the build down, because a wrong canonical URL is a
+ * recoverable SEO problem and a failed deploy is an outage.
+ */
+function resolveSiteUrl(): string {
+  /**
+   * Order of preference:
+   *
+   * 1. NEXT_PUBLIC_SITE_URL, the real domain once there is one.
+   * 2. VERCEL_PROJECT_PRODUCTION_URL, which Vercel sets automatically to the
+   *    project's stable production address. Before a domain is bought this is
+   *    a live, reachable URL, which matters because canonical links and the
+   *    Open Graph image are absolute: pointing them at a domain nobody owns
+   *    yet means link previews load no image at all. Deliberately not
+   *    VERCEL_URL, which changes on every deployment and would make canonical
+   *    URLs unstable.
+   * 3. The placeholder domain, as a last resort.
+   *
+   * SITE_URL is only ever read on the server, so an unprefixed Vercel
+   * variable is safe here and nothing is exposed to the browser.
+   */
+  const raw =
+    process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
+    process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
+
+  if (!raw) return FALLBACK_SITE_URL;
+
+  /* Accepts "example.org" as readily as "https://example.org". */
+  const candidate = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+
+  try {
+    const parsed = new URL(candidate);
+    if (parsed.hostname.length === 0) return FALLBACK_SITE_URL;
+
+    /* Origin only, with any trailing slash or path dropped, so callers can
+       safely resolve paths against it. */
+    return parsed.origin;
+  } catch {
+    return FALLBACK_SITE_URL;
+  }
+}
+
 /** Absolute site origin, used for metadataBase, canonicals and sitemap. */
-export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.jude22initiative.org";
+export const SITE_URL = resolveSiteUrl();
