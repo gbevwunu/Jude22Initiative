@@ -44,7 +44,7 @@ export default function ContactPage() {
               <ScrollReveal delay={60} className="mt-8">
                 <div className="flex flex-col gap-6">
                   <div>
-                    <h3 className="font-heading text-xs font-semibold tracking-[0.1em] text-gold-ink uppercase">
+                    <h3 className="font-heading text-label font-semibold tracking-[0.1em] text-gold-ink uppercase">
                       Email
                     </h3>
                     <p className="mt-2 flex flex-wrap items-center gap-3">
@@ -59,7 +59,7 @@ export default function ContactPage() {
                   </div>
 
                   <div>
-                    <h3 className="font-heading text-xs font-semibold tracking-[0.1em] text-gold-ink uppercase">
+                    <h3 className="font-heading text-label font-semibold tracking-[0.1em] text-gold-ink uppercase">
                       Phone
                     </h3>
                     <p className="mt-2 flex flex-wrap items-center gap-3">
@@ -74,7 +74,7 @@ export default function ContactPage() {
                   </div>
 
                   <div>
-                    <h3 className="font-heading text-xs font-semibold tracking-[0.1em] text-gold-ink uppercase">
+                    <h3 className="font-heading text-label font-semibold tracking-[0.1em] text-gold-ink uppercase">
                       Location
                     </h3>
                     <p className="mt-2 flex flex-wrap items-center gap-3 text-[1.0625rem] text-grey-900">
@@ -84,7 +84,7 @@ export default function ContactPage() {
                   </div>
 
                   <div>
-                    <h3 className="font-heading text-xs font-semibold tracking-[0.1em] text-gold-ink uppercase">
+                    <h3 className="font-heading text-label font-semibold tracking-[0.1em] text-gold-ink uppercase">
                       Social
                     </h3>
                     {confirmedSocials.length > 0 ? (
@@ -103,7 +103,7 @@ export default function ContactPage() {
                         ))}
                       </ul>
                     ) : (
-                      <p className="mt-2 flex flex-wrap items-center gap-3 text-[0.9375rem] text-[var(--muted-fg)]">
+                      <p className="mt-2 flex flex-wrap items-center gap-3 text-body-sm text-[var(--muted-fg)]">
                         Profiles are added once the handles are confirmed.
                         <Badge variant="review">Handles pending</Badge>
                       </p>
@@ -119,7 +119,7 @@ export default function ContactPage() {
                   </h3>
                   <ul className="mt-4 flex flex-col gap-2.5">
                     {REASONS.map((reason) => (
-                      <li key={reason} className="flex gap-3 text-[0.9375rem] text-grey-900">
+                      <li key={reason} className="flex gap-3 text-body-sm text-grey-900">
                         <span
                           aria-hidden="true"
                           className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold"
@@ -136,7 +136,7 @@ export default function ContactPage() {
             <div>
               <ScrollReveal delay={80}>
                 <h2 className="font-heading text-xl font-semibold text-navy">Send us a message</h2>
-                <p className="mt-2 max-w-[52ch] text-[0.9375rem] text-[var(--muted-fg)]">
+                <p className="mt-2 max-w-[52ch] text-body-sm text-[var(--muted-fg)]">
                   Fill this in and it reaches the team directly. You will land
                   on a confirmation page once it sends.
                 </p>

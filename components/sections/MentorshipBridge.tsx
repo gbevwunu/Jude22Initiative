@@ -37,7 +37,7 @@ export default function MentorshipBridge() {
             <div className="rounded-2xl border border-[var(--hairline)] bg-white/[0.04] p-7 text-center lg:text-left">
               <NodeMark />
               <h3 className="mt-4 font-heading text-xl font-semibold">{NODES[0].label}</h3>
-              <p className="mt-2 text-[0.9375rem] text-[var(--muted-fg)]">{NODES[0].body}</p>
+              <p className="mt-2 text-body-sm text-[var(--muted-fg)]">{NODES[0].body}</p>
             </div>
 
             {/* Connector: horizontal on desktop, vertical when stacked */}
@@ -87,7 +87,7 @@ export default function MentorshipBridge() {
             <div className="rounded-2xl border border-[var(--hairline)] bg-white/[0.04] p-7 text-center lg:text-left">
               <NodeMark filled />
               <h3 className="mt-4 font-heading text-xl font-semibold">{NODES[1].label}</h3>
-              <p className="mt-2 text-[0.9375rem] text-[var(--muted-fg)]">{NODES[1].body}</p>
+              <p className="mt-2 text-body-sm text-[var(--muted-fg)]">{NODES[1].body}</p>
             </div>
           </div>
         </ScrollReveal>
